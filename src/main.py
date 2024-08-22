@@ -1,10 +1,10 @@
 import streamlit as st
 
-from pages.home import home
+from components.home import home
 
-from pages.settings.cities import settings_cities_page
-from pages.settings.items import settings_items_page
-from pages.settings.preferences import settings_preferences_page
+from components.settings.cities import settings_cities_page
+from components.settings.items import settings_items_page
+from components.settings.preferences import settings_preferences_page
 
 # initial session_state values
 INIT_STATE = {
