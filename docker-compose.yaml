@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  app:
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - "8501:8501"
+
