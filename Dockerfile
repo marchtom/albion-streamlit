@@ -5,10 +5,11 @@ WORKDIR /app
 RUN pip install poetry
 
 COPY pyproject.toml poetry.lock ./
-COPY src .
 
 RUN poetry config virtualenvs.create false \
-    && poetry install --no-root --no-interaction --no-ansi
+&& poetry install --no-root --no-interaction --no-ansi
+
+COPY src .
 
 EXPOSE 8501
 
