@@ -30,9 +30,13 @@ ITEMS = [
 
 
 def settings_items() -> None:
+    search_query = st.text_input("Search / Filter", "")
+
     columns = st.columns(st.session_state.display_columns)
 
-    for idx, item in enumerate(ITEMS):
+    filtered_items = [item for item in ITEMS if search_query.strip() in item]
+
+    for idx, item in enumerate(filtered_items):
         st_key = f'item_checkbox_{item}'
         widget_key = f'_{st_key}'
         load_widget_value(st_key)

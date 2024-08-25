@@ -8,7 +8,7 @@ from components.settings.preferences import settings_preferences_page
 
 # initial session_state values
 INIT_STATE = {
-    'display_columns': 4,
+    'display_columns': 3,
 }
 
 

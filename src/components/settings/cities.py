@@ -15,9 +15,13 @@ CITIES = [
 
 
 def settings_cities() -> None:
+    search_query = st.text_input("Search / Filter", "")
+
     columns = st.columns(st.session_state.display_columns)
 
-    for idx, city in enumerate(CITIES):
+    filtered_cities = [city for city in CITIES if search_query.strip() in city]
+
+    for idx, city in enumerate(filtered_cities):
         st_key = f'city_checkbox_{city}'
         widget_key = f'_{st_key}'
         load_widget_value(st_key)
