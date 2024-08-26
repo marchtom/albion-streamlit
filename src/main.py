@@ -1,10 +1,10 @@
 import streamlit as st
 
-from components.home import home
+from views.home import home
 
-from components.settings.cities import settings_cities_page
-from components.settings.items import settings_items_page
-from components.settings.preferences import settings_preferences_page
+from views.settings.cities import settings_cities_page
+from views.settings.items import settings_items_page
+from views.settings.preferences import settings_preferences_page
 
 from db import mongo_db
 
