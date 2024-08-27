@@ -29,7 +29,7 @@ ITEMS = [
 ]
 
 
-def settings_items() -> None:
+def items(self) -> None:
     search_query = st.text_input("Search / Filter", "")
 
     columns = st.columns(st.session_state.display_columns)
@@ -48,5 +48,3 @@ def settings_items() -> None:
             on_change=store_widget_value,
             args=[st_key],
         )
-
-settings_items_page = st.Page(settings_items, title='Items', icon=':material/settings:')

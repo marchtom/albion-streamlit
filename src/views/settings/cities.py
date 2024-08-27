@@ -14,7 +14,7 @@ CITIES = [
 ]
 
 
-def settings_cities() -> None:
+def cities(self) -> None:
     search_query = st.text_input("Search / Filter", "")
 
     columns = st.columns(st.session_state.display_columns)
@@ -33,5 +33,3 @@ def settings_cities() -> None:
             on_change=store_widget_value,
             args=[st_key],
         )
-
-settings_cities_page = st.Page(settings_cities, title='Cities', icon=':material/settings:')
