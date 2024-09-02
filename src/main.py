@@ -3,13 +3,11 @@ import types
 
 import streamlit as st
 
+from db import mongo_db
 from views.home import home
-
 from views.settings.cities import cities
 from views.settings.items import items
 from views.settings.preferences import preferences
-
-from db import mongo_db
 
 # initial session_state values
 INIT_STATE = {

@@ -2,7 +2,6 @@ import streamlit as st
 
 from helpers import load_widget_value, store_widget_value
 
-
 ITEMS = [
     'T1_CARROT',
     'T2_BEAN',

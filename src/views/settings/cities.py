@@ -2,7 +2,6 @@ import streamlit as st
 
 from helpers import load_widget_value, store_widget_value
 
-
 CITIES = [
     'Bridgewatch',
     'Fort Sterling',
