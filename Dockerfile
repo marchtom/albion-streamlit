@@ -13,7 +13,7 @@ ENV PYTHONUNBUFFERED=1 \
 COPY pyproject.toml poetry.lock ./
 
 RUN --mount=type=cache,target=$POETRY_CACHE_DIR \
-    poetry install --no-root --no-ansi --without dev
+    poetry install --no-root --no-ansi
 
 
 FROM python:3.12-slim-bullseye as prod
@@ -40,6 +40,6 @@ FROM builder as dev
 ENV VIRTUAL_ENV=/app/.venv \
     PATH="/app/.venv/bin:$PATH"
 
-RUN poetry install --no-root --no-interaction --no-ansi --only dev
+RUN poetry install --no-root --no-interaction --no-ansi --with dev
 
 COPY src .
