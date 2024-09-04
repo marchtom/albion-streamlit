@@ -1,3 +1,16 @@
+DEV_IMAGE=app-streamlit-dev:latest
+PROD_IMAGE=app-streamlit-prod:latest
+
+# docker builds
+build-dev:
+	docker build -t $(DEV_IMAGE) --target=dev . 
+.PHONY: build-dev
+
+build-prod:
+	docker build -t $(PROD_IMAGE) --target=prod . 
+.PHONY: build-prod
+
+# lint - local
 lint:
 	ruff check . --config pyproject.toml
 .PHONY: lint

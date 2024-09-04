@@ -1,31 +1,45 @@
-# base
-FROM python:3.12-slim as base-image
+FROM python:3.12-slim as builder
 
 WORKDIR /app
 
-ENV PYTHONUNBUFFERED=1
-
 RUN pip install poetry==1.8.3
+
+ENV PYTHONUNBUFFERED=1 \
+    POETRY_NO_INTERACTION=1 \
+    POETRY_VIRTUALENVS_IN_PROJECT=1 \
+    POETRY_VIRTUALENVS_CREATE=1 \
+    POETRY_CACHE_DIR=/tmp/poetry_cache
 
 COPY pyproject.toml poetry.lock ./
 
-RUN poetry config virtualenvs.create false \
-    && poetry install --no-root --no-interaction --no-ansi --without dev
+RUN --mount=type=cache,target=$POETRY_CACHE_DIR \
+    poetry install --no-root --no-ansi --without dev
+
+
+FROM python:3.12-slim-bullseye as prod
+
+ENV VIRTUAL_ENV=/app/.venv \
+PATH="/app/.venv/bin:$PATH"
+
+COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
 COPY src .
 
-# prod
-FROM base-image as prod-image
+### Possible security improvements, will increase image size
+# RUN groupadd -r appuser && useradd -r -g appuser appuser
+# RUN chown -R appuser:appuser /app
+# USER appuser
 
 EXPOSE 8501
 
 CMD ["streamlit", "run", "main.py"]
 
-# dev
-FROM base-image as dev-image
+
+FROM builder as dev
+
+ENV VIRTUAL_ENV=/app/.venv \
+    PATH="/app/.venv/bin:$PATH"
 
 RUN poetry install --no-root --no-interaction --no-ansi --only dev
 
-EXPOSE 8501
-
-CMD ["streamlit", "run", "main.py"]
+COPY src .

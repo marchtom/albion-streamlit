@@ -14,11 +14,9 @@ services:
   app:
     build:
       dockerfile: Dockerfile
-      target: dev-image
+      target: prod
     ports:
       - "8501:8501"
-    volumes:
-      - ./src:/app
     depends_on:
       - mongodb
     environment:
