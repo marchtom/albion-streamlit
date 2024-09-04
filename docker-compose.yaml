@@ -15,6 +15,7 @@ services:
     build:
       dockerfile: Dockerfile
       target: prod
+    image: app-streamlit-prod:latest
     ports:
       - "8501:8501"
     depends_on:
