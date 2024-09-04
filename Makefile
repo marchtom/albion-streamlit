@@ -3,11 +3,11 @@ PROD_IMAGE=app-streamlit-prod:latest
 
 # docker builds
 build-dev:
-	docker build -t $(DEV_IMAGE) --target=dev . 
+	DOCKER_BUILDKIT=1 docker build -t $(DEV_IMAGE) --target=dev . 
 .PHONY: build-dev
 
 build-prod:
-	docker build -t $(PROD_IMAGE) --target=prod . 
+	DOCKER_BUILDKIT=1 docker build -t $(PROD_IMAGE) --target=prod . 
 .PHONY: build-prod
 
 # lint - local
