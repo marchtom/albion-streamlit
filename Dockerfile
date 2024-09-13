@@ -39,8 +39,7 @@ CMD ["streamlit", "run", "main.py"]
 
 FROM builder as dev
 
-ENV VIRTUAL_ENV=/app/.venv \
-    PATH="/app/.venv/bin:$PATH"
+ENV PATH="/deps/.venv/bin:$PATH"
 
 RUN poetry install --no-root --no-interaction --no-ansi --with dev
 
