@@ -28,7 +28,7 @@ ITEMS = [
 ]
 
 
-def items(self) -> None:
+def items() -> None:
     search_query = st.text_input("Search / Filter", "")
 
     columns = st.columns(st.session_state.display_columns)

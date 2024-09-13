@@ -1,5 +1,7 @@
+import json
 import logging
-import types
+import logging.config
+import pathlib
 
 import streamlit as st
 
@@ -15,14 +17,11 @@ INIT_STATE = {
 }
 
 
-class Dashboard:
-    """Main class for Dashboard serving and configuration."""
+class DashboardApp:
+    """Main class for streamlit dashboard configuration and utilities."""
 
-    def __init__(self) -> None:
-        self.home = types.MethodType(home, self)
-        self.cities = types.MethodType(cities, self)
-        self.items = types.MethodType(items, self)
-        self.preferences = types.MethodType(preferences, self)
+    def __init__(self, logger: logging.Logger) -> None:
+        self.logger = logger
 
         self._populate_session_state()
 
@@ -37,37 +36,47 @@ class Dashboard:
         for setting in stored_settings:
             st.session_state.update(setting)
 
-    def main(self) -> None:
-        logger.info('main() executed')
 
-        pg = st.navigation(
-            {
-                'Home': [
-                    st.Page(self.home, title='Home Page', icon=':material/home:'),
-                ],
-                'Settings': [
-                    st.Page(self.preferences, title='Preferences', icon=':material/settings:'),
-                    st.Page(self.cities, title='Cities', icon=':material/settings:'),
-                    st.Page(self.items, title='Items', icon=':material/settings:'),
-                ],
-            }
-        )
+def main(app: DashboardApp) -> None:
+    """The main function executed after every interaction with streamlit web UI."""
 
-        pg.run()
+    app.logger.info('main() executed')
+
+    pg = st.navigation(
+        {
+            'Home': [
+                st.Page(home, title='Home Page', icon=':material/home:'),
+            ],
+            'Settings': [
+                st.Page(preferences, title='Preferences', icon=':material/settings:'),
+                st.Page(cities, title='Cities', icon=':material/settings:'),
+                st.Page(items, title='Items', icon=':material/settings:'),
+            ],
+        }
+    )
+
+    pg.run()
+
+
+def setup_logging() -> None:
+    config_file = pathlib.Path("logging_configs/stdout.json")
+
+    with open(config_file) as f:
+        config = json.load(f)
+
+    logging.config.dictConfig(config)
+
 
 if __name__ == '__main__':
 
     if 'logger' not in st.session_state:
-        logging.basicConfig(
-            format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-            level=logging.INFO,
-        )
+        setup_logging()
         logger = logging.getLogger(__name__)
         logger.info('logging initialized')
         st.session_state.logger = logger
 
     if 'app' not in st.session_state:
         logger.info("create Dashboard()")
-        st.session_state.app = Dashboard()
+        st.session_state.app = DashboardApp(logger)
 
-    st.session_state.app.main()
+    main(st.session_state.app)

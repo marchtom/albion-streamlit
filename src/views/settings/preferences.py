@@ -3,7 +3,7 @@ import streamlit as st
 from helpers import load_widget_value, store_widget_value
 
 
-def preferences(self) -> None:
+def preferences() -> None:
     load_widget_value('display_columns')
 
     st.number_input(
