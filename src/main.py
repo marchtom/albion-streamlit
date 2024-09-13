@@ -76,7 +76,7 @@ if __name__ == '__main__':
         st.session_state.logger = logger
 
     if 'app' not in st.session_state:
-        logger.info("create Dashboard()")
+        logger.info("create dashboard")
         st.session_state.app = DashboardApp(logger)
 
     main(st.session_state.app)
