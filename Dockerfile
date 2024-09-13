@@ -1,6 +1,6 @@
 FROM python:3.12-slim as builder
 
-WORKDIR /app
+WORKDIR /deps
 
 RUN pip install poetry==1.8.3
 
@@ -18,8 +18,10 @@ RUN --mount=type=cache,target=$POETRY_CACHE_DIR \
 
 FROM python:3.12-slim-bullseye as prod
 
-ENV VIRTUAL_ENV=/app/.venv \
-PATH="/app/.venv/bin:$PATH"
+WORKDIR /app
+
+ENV VIRTUAL_ENV=/deps/.venv \
+PATH="/deps/.venv/bin:$PATH"
 
 COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
