@@ -1,4 +1,4 @@
-FROM python:3.12-slim as builder
+FROM python:3.12-slim AS builder
 
 WORKDIR /deps
 
@@ -16,7 +16,7 @@ RUN --mount=type=cache,target=$POETRY_CACHE_DIR \
     poetry install --no-root --no-ansi
 
 
-FROM python:3.12-slim-bullseye as prod
+FROM python:3.12-slim-bullseye AS prod
 
 WORKDIR /app
 
@@ -37,7 +37,7 @@ EXPOSE 8501
 CMD ["streamlit", "run", "main.py"]
 
 
-FROM builder as dev
+FROM builder AS dev
 
 ENV PATH="/deps/.venv/bin:$PATH"
 
