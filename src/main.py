@@ -4,6 +4,7 @@ import logging.config
 import pathlib
 
 import streamlit as st
+from pymongo.database import Database
 
 from db import mongo_db
 from views.home import home
@@ -20,8 +21,9 @@ INIT_STATE = {
 class DashboardApp:
     """Main class for streamlit dashboard configuration and utilities."""
 
-    def __init__(self, logger: logging.Logger) -> None:
+    def __init__(self, logger: logging.Logger, mongo_db: Database) -> None:
         self.logger = logger
+        self.mongo_db = mongo_db
 
         self._populate_session_state()
 
@@ -32,7 +34,7 @@ class DashboardApp:
             if key not in st.session_state:
                 st.session_state[key] = value
 
-        stored_settings = mongo_db['widgets'].find({}, {"_id": 0})
+        stored_settings = self.mongo_db['widgets'].find({}, {"_id": 0})
         for setting in stored_settings:
             st.session_state.update(setting)
 
@@ -45,7 +47,7 @@ def main(app: DashboardApp) -> None:
     pg = st.navigation(
         {
             'Home': [
-                st.Page(home, title='Home Page', icon=':material/home:'),
+                st.Page(home, title='Home Page', icon=':material/home:', default=True),
             ],
             'Settings': [
                 st.Page(preferences, title='Preferences', icon=':material/settings:'),
@@ -77,6 +79,6 @@ if __name__ == '__main__':
 
     if 'app' not in st.session_state:
         logger.info("create dashboard")
-        st.session_state.app = DashboardApp(logger)
+        st.session_state.app = DashboardApp(logger, mongo_db)
 
     main(st.session_state.app)
