@@ -1,6 +1,6 @@
 import streamlit as st
 
-from helpers import load_widget_value, store_widget_value
+from helpers.widget import load_widget_value, store_widget_value
 
 
 def preferences() -> None:
